@@ -9,8 +9,6 @@ namespace Demographic.Classes
         private DeathRules _deathRules;
         private int _currentYear;
         private SimulationResult _simulationResult;
-        private int _birthsThisYear;
-        private int _deathsThisYear;
 
         public event EventHandler<int> YearTick;
 
@@ -48,26 +46,18 @@ namespace Demographic.Classes
             var child = new Person(0, e.ChildGender);
             child.ChildBirth += OnChildBirth;
             _persons.Add(child);
-            _birthsThisYear++;
         }
 
         public void RunSimulation(int endYear)
         {
             while (_currentYear <= endYear)
             {
-                _birthsThisYear = 0;
-                _deathsThisYear = 0;
-
                 var alivePersons = _persons.Where(p => p.IsAlive).ToList();
 
                 foreach (var person in alivePersons)
                 {
                     bool wasAlive = person.IsAlive;
                     person.ProcessYear(_currentYear, _deathRules);
-                    if (wasAlive && !person.IsAlive)
-                    {
-                        _deathsThisYear++;
-                    }
                 }
 
                 SaveYearlyStats();
