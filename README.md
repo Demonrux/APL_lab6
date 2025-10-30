@@ -126,7 +126,7 @@ dotnet run [initialAgeFile] [deathRulesFile] [startYear] [endYear] [totalPopulat
 
 ## Параметры по умолчанию
 - **`initialAgeFile`**: Files/InitialAge.csv
-- deathRulesFile`**: Files/DeathRules.csv
+- **`deathRulesFile`**: Files/DeathRules.csv
 - **`startYear`**: 1970
 - **`endYear`**: 2021
 - **`totalPopulation`**: 130,000,000
@@ -187,6 +187,47 @@ Age,Gender,IsAlive,DeathYear
 - Интерфейсы для легкого тестирования и расширения
 - Событийная модель для связи между компонентами
 - Инверсия зависимостей через интерфейсы
+
+## Визуализация результатов в Jupyter Notebook
+
+Для анализа результатов создан Python скрипт с построением графиков:
+
+### Запуск симуляции из Python
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import subprocess
+import os
+
+%matplotlib inline
+plt.style.use('seaborn-v0_8-whitegrid')
+
+# Настройка путей
+exe_path = r"путь\к\Demographic.Exec.exe"
+init_age_path = r"путь\к\InitialAge.csv"
+death_rules_path = r"путь\к\DeathRules.csv"
+
+# Ввод параметров
+start_year = input('Введите год начала моделирования: ')
+end_year = input('Введите год окончания моделирования: ')
+start_people = input('Введите начальный состав населения: ')
+
+# Запуск C# приложения
+process = subprocess.run([
+    exe_path, init_age_path, death_rules_path,
+    start_year, end_year, start_people,
+    'Population.csv', 'People.csv' # Убедитесь, что у вас есть эти файлы, в противном случаем задайте пути к своим 
+], capture_output=True, text=True, encoding='cp866')
+```
+## Примеры графиков после моделирования
+
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/a8e73bd5-aa30-4bac-b3f9-d1485344b600" />
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/e36d767a-c466-4099-9a69-80c4f8323713" />
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/3ec1e668-4194-40c2-be48-cdeac530eaaa" />
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/ad6ff895-9213-43f1-90a9-07d810d2608d" />
+
+
 
 
 
