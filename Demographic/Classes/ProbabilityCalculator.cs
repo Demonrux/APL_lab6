@@ -1,6 +1,4 @@
-﻿
-
-namespace Demographic.Classes
+﻿namespace Demographic.Classes
 {
     public static class ProbabilityCalculator
     {

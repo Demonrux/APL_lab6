@@ -23,4 +23,5 @@ bld/
 [Ll]ogs/
 
 .vs/
+docs/
 "@ | Out-File -FilePath .gitignore -Encoding UTF8

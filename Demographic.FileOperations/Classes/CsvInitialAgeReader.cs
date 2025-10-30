@@ -22,7 +22,7 @@ namespace Demographic.FileOperations.Classes
                         int age = int.Parse(parts[0].Trim());
                         double countPer1000 = double.Parse(parts[1].Trim(), CultureInfo.InvariantCulture);
 
-                        distribution[age] = countPer1000;
+                        distribution[age] = countPer1000 / 1000.0;
                     }
                 }
             }
