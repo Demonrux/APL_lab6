@@ -54,7 +54,6 @@ namespace Demographic.Classes
             while (_currentYear <= endYear)
             {
                 YearTick?.Invoke(this, _currentYear);
-
                 SaveYearlyStats();
                 _currentYear++;
             }
