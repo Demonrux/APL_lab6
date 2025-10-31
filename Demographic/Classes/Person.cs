@@ -35,10 +35,9 @@ namespace Demographic.Classes
 
             Age++;
 
-            if (IsAlive && Gender == Gender.Female && Age >= 18 && Age <= 45)
+            if (IsAlive && Gender == Gender.Female && Age >= Constants.MIN_CHILDBEARING_AGE && Age <= Constants.MAX_CHILDBEARING_AGE)
             {
-                double birthProbability = 0.151;
-                if (ProbabilityCalculator.IsEventHappened(birthProbability))
+                if (ProbabilityCalculator.IsEventHappened(Constants.BIRTH_PROBABILITY))
                 {
                     OnChildBirth(currentYear);
                 }
@@ -47,7 +46,7 @@ namespace Demographic.Classes
 
         protected virtual void OnChildBirth(int currentYear)
         {
-            var childGender = ProbabilityCalculator.IsEventHappened(0.55) ? Gender.Female : Gender.Male;
+            var childGender = ProbabilityCalculator.IsEventHappened(Constants.FEMALE_BIRTH_PROBABILITY) ? Gender.Female : Gender.Male;
             ChildBirth?.Invoke(this, new ChildBirthEventArgs(childGender, currentYear));
         }
     }
