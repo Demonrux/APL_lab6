@@ -24,8 +24,6 @@ namespace Demographic.Classes
 
         private void InitializeInitialPopulation(double totalPopulation, InitialAgeData ageData)
         {
-            var random = new Random();
-
             foreach (var (age, percentage) in ageData.AgePercentages)
             {
                 int countForThisAge = (int)(totalPopulation * percentage);
@@ -34,8 +32,8 @@ namespace Demographic.Classes
 
                 for (int i = 0; i < countForThisAge; i++)
                 {
-                    var gender = random.Next(2) == 0 ? Gender.Male : Gender.Female;
-                    var person = new Person(age, gender, this);
+                    var gender = ProbabilityCalculator.IsEventHappened(Constants.DEFAULT_GENDER_PROBABILITY) ? Gender.Male : Gender.Female;
+                    var person = new Person(age, gender, DeathRules, this);
                     person.ChildBirth += OnChildBirth;
                     _persons.Add(person);
                 }
