@@ -12,7 +12,7 @@
 
 ##  Ключевые особенности архитектуры
 
-## Диаграмма классов
+### Диаграмма классов
 <img width="1200" height="1200" alt="image" src="https://github.com/user-attachments/assets/2e887a0f-60e2-4159-b5d0-9af4db917484" />
 
 ### Событийная модель
