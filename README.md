@@ -45,8 +45,8 @@ Demographic/ # Решение
 │   ├── Files/
 │   │   ├── DeathRules.csv # Правила смертности
 │   │   ├── InitialAge.csv # Начальное распределение возрастов
-│   │   ├── PeopleData.csv # Выходные данные людей
-│   │   └── PopulationData.csv # Выходные данные населения
+│   │   ├── PeopleData.csv # Выходные данные отдельных людей на последний год моделирования
+│   │   └── PopulationData.csv # Общие выходные данные населения за весь период (снимки популяции)
 │   └── Program.cs # Точка входа
 └── Demographic.FileOperations/ # Class Library (.NET Standard)
     ├── Classes/
