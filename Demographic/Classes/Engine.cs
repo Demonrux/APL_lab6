@@ -53,7 +53,6 @@ namespace Demographic.Classes
         {
             while (_currentYear <= endYear)
             {
-                // Вызываем событие - все люди автоматически обработаются
                 YearTick?.Invoke(this, _currentYear);
 
                 SaveYearlyStats();
