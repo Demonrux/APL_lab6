@@ -20,17 +20,24 @@ namespace Demographic.Exec
                 double totalPopulation = 13000000; 
 
                 if (args.Length >= 1) initialAgeFilePath = args[0];
-                if (args.Length >= 2) deathRulesFilePath = args[1];
-                if (args.Length >= 3) startYear = int.Parse(args[2]);
-                if (args.Length >= 4) endYear = int.Parse(args[3]);
-                if (args.Length >= 5) totalPopulation = double.Parse(args[4]);
-                if (args.Length >= 6) outputPopulationPath = args[5];
-                if (args.Length >= 7) outputPeoplePath = args[6];
+               if (args.Length >= 2) deathRulesFilePath = args[1];
+               if (args.Length >= 3 && !int.TryParse(args[2], out startYear))
+                   throw new ArgumentException("Некорректный начальный год");
+               if (args.Length >= 4 && !int.TryParse(args[3], out endYear))
+                   throw new ArgumentException("Некорректный конечный год");
+               if (args.Length >= 5 && !int.TryParse(args[4], out totalPopulation))
+                   throw new ArgumentException("Некорректный размер популяции");
+               if (args.Length >= 6) outputPopulationPath = args[5];
+               if (args.Length >= 7) outputPeoplePath = args[6];
 
-                if (!File.Exists(initialAgeFilePath))
-                    throw new FileNotFoundException($"Файл не найден: {initialAgeFilePath}");
-                if (!File.Exists(deathRulesFilePath))
-                    throw new FileNotFoundException($"Файл не найден: {deathRulesFilePath}");
+               if (!File.Exists(initialAgeFilePath))
+                   throw new FileNotFoundException($"Файл не найден: {initialAgeFilePath}");
+               if (!File.Exists(deathRulesFilePath))
+                   throw new FileNotFoundException($"Файл не найден: {deathRulesFilePath}");
+               if (startYear >= endYear)
+                   throw new ArgumentException("Начальный год должен быть меньше конечного");
+               if (totalPopulation <= 0)
+                   throw new ArgumentException("Размер популяции должен быть положительным");
 
                 Console.WriteLine("Демографическое моделирование");
                 Console.WriteLine();
@@ -63,9 +70,17 @@ namespace Demographic.Exec
                 resultWriter.WritePeopleData(engine.GetPopulation(), outputPeoplePath);
 
             }
-            catch (Exception error)
+             catch (FileNotFoundException ex)
+             {
+                 Console.WriteLine($"Ошибка: {ex.Message}");
+             }
+            catch (ArgumentException ex)
             {
-                Console.WriteLine($"Ошибка: {error.Message}");
+                 Console.WriteLine($"Ошибка в параметрах: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                 Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
             }
         }
     }
