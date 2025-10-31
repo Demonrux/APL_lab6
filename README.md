@@ -13,7 +13,7 @@
 ##  Ключевые особенности архитектуры
 
 ### Диаграмма классов
-<img width="1919" height="403" alt="image" src="https://github.com/user-attachments/assets/c232c475-015e-4d1a-a411-47d61a4adbbc" />
+<img width="2000" height="6000" alt="image" src="https://github.com/user-attachments/assets/c232c475-015e-4d1a-a411-47d61a4adbbc" />
 
 ### Событийная модель
 - **Каждый** **`Person`** подписан на событие **`YearTick`** движка
