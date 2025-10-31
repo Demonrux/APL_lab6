@@ -70,18 +70,18 @@ namespace Demographic.Exec
                 resultWriter.WritePeopleData(engine.GetPopulation(), outputPeoplePath);
 
             }
-             catch (FileNotFoundException ex)
-             {
-                 Console.WriteLine($"Ошибка: {ex.Message}");
-             }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
             catch (ArgumentException ex)
             {
-                 Console.WriteLine($"Ошибка в параметрах: {ex.Message}");
+                Console.WriteLine($"Ошибка в параметрах: {ex.Message}");
             }
             catch (Exception ex)
             {
-                 Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
+                Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
             }
-        }
+        }        
     }
 }
