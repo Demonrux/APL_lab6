@@ -30,6 +30,7 @@ namespace Demographic.Classes
             {
                 IsAlive = false;
                 DeathYear = currentYear;
+                engine.YearTick -= OnYearTick;
                 return;
             }
 
