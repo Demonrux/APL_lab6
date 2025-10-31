@@ -268,10 +268,10 @@ process = subprocess.run([
 ```
 ## Примеры графиков после моделирования
 
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/a8e73bd5-aa30-4bac-b3f9-d1485344b600" />
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/e36d767a-c466-4099-9a69-80c4f8323713" />
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/3ec1e668-4194-40c2-be48-cdeac530eaaa" />
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/ad6ff895-9213-43f1-90a9-07d810d2608d" />
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/5b859d7f-f380-46b6-975f-e1cf137ceefc" />
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/a067ee0a-3579-491d-86be-95da8416bbf5" />
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/5b505217-3262-4066-9f37-1180de7fa635" />
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/3daf2205-9d4a-4c2e-95f8-1b99db66b7cd" />
 
 
 
