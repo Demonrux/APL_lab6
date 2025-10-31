@@ -264,7 +264,7 @@ process = subprocess.run([
     exe_path, init_age_path, death_rules_path,
     start_year, end_year, start_people,
     'Population.csv', 'People.csv' # Убедитесь, что у вас есть эти файлы, в противном случаем задайте пути к своим 
-], capture_output=True, text=True, encoding='cp866')
+])
 ```
 ## Примеры графиков после моделирования
 
