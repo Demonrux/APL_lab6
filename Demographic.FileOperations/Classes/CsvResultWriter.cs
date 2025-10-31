@@ -1,6 +1,7 @@
 ﻿using Demographic.Classes;
 using Demographic.FileOperations.Interfaces;
 using Demographic.Models;
+using System;
 
 namespace Demographic.FileOperations.Classes
 {
@@ -10,6 +11,7 @@ namespace Demographic.FileOperations.Classes
         {
             try
             {
+                Console.WriteLine($"Запись {yearlyStats.Count} записей статистики...");
                 var lines = new List<string>
                 {
                     "year,total_population,male_population,female_population"
@@ -34,9 +36,10 @@ namespace Demographic.FileOperations.Classes
         {
             try
             {
+                Console.WriteLine($"Запись {people.Count} людей...");
                 var lines = new List<string>
                 {
-                    "Age,Gender,IsAlive, DeathYear"
+                    "Age,Gender,IsAlive,DeathYear"
                 };
 
                 foreach (var person in people)
