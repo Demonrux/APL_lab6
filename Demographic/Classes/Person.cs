@@ -37,7 +37,7 @@ namespace Demographic.Classes
 
             if (IsAlive && Gender == Gender.Female && Age >= 18 && Age <= 45)
             {
-                double birthProbability = 0.05;
+                double birthProbability = 0.151;
                 if (ProbabilityCalculator.IsEventHappened(birthProbability))
                 {
                     OnChildBirth(currentYear);
