@@ -13,7 +13,7 @@ namespace Demographic.Classes
 
         public void Initialize(double totalPopulation, int startYear, InitialAgeData ageData, DeathRules deathRules)
         {
-            double totalPopulationInObjects = totalPopulation / 1000.0;
+            double totalPopulationInObjects = totalPopulation / Constants.INITIAL_POPULATION_SCALE;
             DeathRules = deathRules;
             _persons = new List<Person>();
             _currentYear = startYear;
