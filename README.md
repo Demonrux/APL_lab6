@@ -71,6 +71,19 @@ cd Demographic.Exec
 dotnet run [initialAgeFile] [deathRulesFile] [startYear] [endYear] [totalPopulation] [outputPopulationData] [outputPeopledata]
 ```
 
+### Из Python'a
+```pyton
+subprocess.run([
+    exe_path, # Путь к исполняемому файлу (.exe) проекта Demographic.Exec
+    init_age_path, # Путь к файлу с начальным распределением населения
+    death_rules_path,# Путь к файлу с правилами смертности
+    start_year, # Начальный год моделирования
+    end_year, # Конечный год моделирования
+    start_people,# Начальная численность людей
+    'Population.csv', # Файл куда будет записываться о популяции (снимки)
+    'People.csv'# Файл куда будут записываться данные о людях за последний год, убедитесь , что у вас есть данные файлы, иначе передавайте пути к своим файлам
+])
+
 # Ключевые классы
 
 ## Demographic
