@@ -14,7 +14,7 @@
 
 ### Диаграмма классов
 <img src="https://github.com/user-attachments/assets/c232c475-015e-4d1a-a411-47d61a4adbbc" 
-     style="width: 800px; height: 280px; max-width: 100%;" alt="image" />
+     style="width: 700px; height: 240px; max-width: 100%;" alt="image" />
 
 ### Событийная модель
 - **Каждый** **`Person`** подписан на событие **`YearTick`** движка
