@@ -12,11 +12,10 @@ namespace Demographic.Classes
 
         public event EventHandler<ChildBirthEventArgs> ChildBirth;
 
-        public Person(int age, Gender gender, IEngine engine)
+        public Person(int age, Gender gender)
         {
             Age = age;
             Gender = gender;
-            engine.YearTick += OnYearTick;
         }
 
         private void OnYearTick(object sender, int currentYear)
