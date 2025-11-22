@@ -1,12 +1,12 @@
 using Demographic.Models;
 using Demographic.Interfaces;
-using System;
 
 namespace Demographic.Classes
 {
     public class Engine : IEngine
     {
         public event Action<int> YearTick;
+
         public DeathRules DeathRules { get; private set; }
         private List<Person> _persons;
         private int _currentYear;
@@ -34,33 +34,33 @@ namespace Demographic.Classes
                 for (int i = 0; i < countForThisAge; i++)
                 {
                     var gender = ProbabilityCalculator.IsEventHappened(Constants.DEFAULT_GENDER_PROBABILITY) ? Gender.Male : Gender.Female;
+
                     var person = new Person(age, gender);
+
+                    person.ChildBirth += OnChildBirth;
+
                     _persons.Add(person);
                 }
             }
+        }
+
+        private void OnChildBirth(Person parent, ChildBirthEventArgs e)
+        {
+            var child = new Person(0, e.ChildGender);
+
+            child.ChildBirth += OnChildBirth;
+
+            _persons.Add(child);
         }
 
         public void RunSimulation(int endYear)
         {
             while (_currentYear <= endYear)
             {
-                var newChildren = new List<Person>();
-
-                foreach (var person in _persons)
+                foreach (var person in _persons.ToList())
                 {
-                    bool childBorn = person.ProcessYear(_currentYear, DeathRules);
-
-                    if (childBorn)
-                    {
-                        var childGender = ProbabilityCalculator.IsEventHappened(Constants.FEMALE_BIRTH_PROBABILITY)
-                            ? Gender.Female
-                            : Gender.Male;
-                        var child = new Person(0, childGender);
-                        newChildren.Add(child);
-                    }
+                    person.ProcessYear(_currentYear, DeathRules);
                 }
-
-                _persons.AddRange(newChildren);
 
                 YearTick?.Invoke(_currentYear);
                 SaveYearlyStats();
@@ -70,7 +70,7 @@ namespace Demographic.Classes
 
         private void SaveYearlyStats()
         {
-            var alivePersons = _persons.Where(persons => persons.IsAlive).ToList();
+            var alivePersons = _persons.Where(p => p.IsAlive).ToList();
 
             var stats = new DemographicStats
             {
