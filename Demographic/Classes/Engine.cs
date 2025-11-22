@@ -62,6 +62,12 @@ namespace Demographic.Classes
             {
                 YearTick?.Invoke(_currentYear, DeathRules);
 
+                var deadPersons = _persons.Where(persons => !persons.IsAlive).ToList();
+                foreach (var deadPerson in deadPersons)
+                {
+                    YearTick -= deadPerson.ProcessYear; // ОТПИСКА!
+                }
+
                 SaveYearlyStats();
                 _currentYear++;
             }
