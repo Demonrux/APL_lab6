@@ -3,8 +3,8 @@
     public class DemographicStats
     {
         public int Year { get; set; }
-        public double TotalPopulation { get; set; }
-        public double MalePopulation { get; set; }
-        public double FemalePopulation { get; set; }
+        public int TotalPopulation { get; set; }
+        public int MalePopulation { get; set; }
+        public int FemalePopulation { get; set; }
     }
 }

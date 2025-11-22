@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		doxygen.config = doxygen.config
+		D:\Downloads\Modeling.ipynb = D:\Downloads\Modeling.ipynb
 	EndProjectSection
 EndProject
 Global

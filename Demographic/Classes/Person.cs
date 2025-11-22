@@ -3,6 +3,7 @@ using Demographic.Models;
 
 namespace Demographic.Classes
 {
+    /// @ingroup core_system
     public class Person
     {
         public int Age { get; private set; }
@@ -10,7 +11,8 @@ namespace Demographic.Classes
         public bool IsAlive { get; private set; } = true;
         public int? DeathYear { get; private set; }
 
-        public event EventHandler<ChildBirthEventArgs> ChildBirth;
+        private readonly DeathRules _deathRules;
+        private readonly IEngine _engine;
 
         public Person(int age, Gender gender)
         {
@@ -18,12 +20,11 @@ namespace Demographic.Classes
             Gender = gender;
         }
 
-        private void OnYearTick(object sender, int currentYear)
+        public void ProcessYear(int currentYear)
         {
             if (!IsAlive) return;
 
-            var engine = (IEngine)sender;
-            double deathProbability = engine.DeathRules.GetDeathProbability(Age, Gender);
+            double deathProbability = _deathRules.GetDeathProbability(Age, Gender);
 
             if (ProbabilityCalculator.IsEventHappened(deathProbability))
             {

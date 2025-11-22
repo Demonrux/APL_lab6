@@ -11,13 +11,13 @@ namespace Demographic.Exec
         {
             try
             {
-                string initialAgeFilePath = "C:\\Users\\Пользователь\\source\\repos\\Demographic.Exec\\Files\\InitialAge.csv";
-                string deathRulesFilePath = "C:\\Users\\Пользователь\\source\\repos\\Demographic.Exec\\Files\\DeathRules.csv";
-                string outputPopulationPath = "C:\\Users\\Пользователь\\source\\repos\\Demographic.Exec\\Files\\PopulationData.csv";
+                string initialAgeFilePath = "C:\\Users\\Пользователь\\source\\repos\\DemographicProject\\Demographic.Exec\\Files\\InitialAge.csv";
+                string deathRulesFilePath = "C:\\Users\\Пользователь\\source\\repos\\DemographicProject\\Demographic.Exec\\Files\\DeathRules.csv";
+                string outputPopulationPath = "C:\\Users\\Пользователь\\source\\repos\\DemographicProject\\Demographic.Exec\\Files\\PopulationData.csv";
                 string outputPeoplePath = "C:\\Users\\Пользователь\\source\\repos\\DemographicProject\\Demographic.Exec\\Files\\PeopleData.csv";
                 int startYear = 1970;
-                int endYear = 1975;
-                double totalPopulation = 13000000; 
+                int endYear = 2022;
+                int totalPopulation = 13000000;
 
                 if (args.Length >= 1) initialAgeFilePath = args[0];
                if (args.Length >= 2) deathRulesFilePath = args[1];
@@ -42,9 +42,9 @@ namespace Demographic.Exec
                 Console.WriteLine("Демографическое моделирование");
                 Console.WriteLine();
 
-                IInitialAgeReader? ageReader = new CsvInitialAgeReader();
-                IDeathRulesReader? deathReader = new CsvDeathRulesReader();
-                IResultWriter? resultWriter = new CsvResultWriter();
+                IInitialAgeReader ageReader = new CsvInitialAgeReader();
+                IDeathRulesReader deathReader = new CsvDeathRulesReader();
+                IResultWriter resultWriter = new CsvResultWriter();
 
                 var rawAgeDistribution = ageReader.ReadAgeDistribution(initialAgeFilePath);
                 var ageData = new InitialAgeData();
@@ -58,16 +58,15 @@ namespace Demographic.Exec
                 Console.WriteLine($"После инициализации: {initialPopulation.Count} объектов Person");
 
                 Console.WriteLine("Запуск...");
-                engine.YearTick += (sender, year) => Console.WriteLine($"Обработан год: {year}");
+                engine.YearTick += (year) => Console.WriteLine($"Обработан год: {year}");
 
                 engine.RunSimulation(endYear);
 
                 var result = engine.GetSimulationResult();
-
                 var population = engine.GetPopulation();
 
                 resultWriter.WritePopulationData(result.YearlyStatistics, outputPopulationPath);
-                resultWriter.WritePeopleData(engine.GetPopulation(), outputPeoplePath);
+                resultWriter.WritePeopleData(population, outputPeoplePath);
 
             }
             catch (FileNotFoundException ex)

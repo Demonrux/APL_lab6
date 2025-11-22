@@ -4,6 +4,7 @@ using Demographic.Models;
 
 namespace Demographic.FileOperations.Classes
 {
+
     public class CsvDeathRulesReader : IDeathRulesReader
     {
         public DeathRules ReadDeathRules(string filePath)

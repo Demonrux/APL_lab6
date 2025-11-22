@@ -3,9 +3,10 @@ using Demographic.Interfaces;
 
 namespace Demographic.Classes
 {
+    /// @ingroup core_system
     public class Engine : IEngine
     {
-        public event EventHandler<int> YearTick;
+        public event Action<int> YearTick;
         public DeathRules DeathRules { get; private set; }
         private List<Person> _persons;
         private int _currentYear;
@@ -42,9 +43,9 @@ namespace Demographic.Classes
             }
         }
 
-        private void OnChildBirth(object sender, ChildBirthEventArgs e)
+        private void OnChildBirth(ChildBirthEventArgs e)
         {
-            var child = new Person(0, e.ChildGender, this);
+            var child = new Person(0, e.ChildGender, DeathRules, this);
             child.ChildBirth += OnChildBirth;
             _persons.Add(child);
         }
@@ -66,9 +67,9 @@ namespace Demographic.Classes
             var stats = new DemographicStats
             {
                 Year = _currentYear,
-                TotalPopulation = alivePersons.Count,
-                MalePopulation = alivePersons.Count(p => p.Gender == Gender.Male),
-                FemalePopulation = alivePersons.Count(p => p.Gender == Gender.Female)
+                TotalPopulation = alivePersons.Count * (int)Constants.INITIAL_POPULATION_SCALE,
+                MalePopulation = alivePersons.Count(persons => persons.Gender == Gender.Male) * (int)Constants.INITIAL_POPULATION_SCALE,
+                FemalePopulation = alivePersons.Count(persons => persons.Gender == Gender.Female) * (int)Constants.INITIAL_POPULATION_SCALE
             };
 
             _simulationResult.YearlyStatistics.Add(stats);
