@@ -9,15 +9,17 @@ namespace Demographic.Classes
         public bool IsAlive { get; private set; } = true;
         public int? DeathYear { get; private set; }
 
+        public event Action<Person, ChildBirthEventArgs> ChildBirth;
+
         public Person(int age, Gender gender)
         {
             Age = age;
             Gender = gender;
         }
 
-        public bool ProcessYear(int currentYear, DeathRules deathRules)
+        public void ProcessYear(int currentYear, DeathRules deathRules)
         {
-            if (!IsAlive) return false;
+            if (!IsAlive) return;
 
             double deathProbability = deathRules.GetDeathProbability(Age, Gender);
 
@@ -25,23 +27,22 @@ namespace Demographic.Classes
             {
                 IsAlive = false;
                 DeathYear = currentYear;
-                return false;
+                return;
             }
 
             Age++;
 
-            bool childBorn = false;
-            if (IsAlive && Gender == Gender.Female &&
-                Age >= Constants.MIN_CHILDBEARING_AGE &&
-                Age <= Constants.MAX_CHILDBEARING_AGE)
+            if (IsAlive && Gender == Gender.Female &&Age >= Constants.MIN_CHILDBEARING_AGE && Age <= Constants.MAX_CHILDBEARING_AGE)
             {
                 if (ProbabilityCalculator.IsEventHappened(Constants.BIRTH_PROBABILITY))
-                {
-                    childBorn = true;
-                }
+                    OnChildBirth(currentYear);
             }
+        }
 
-            return childBorn;
+        protected virtual void OnChildBirth(int currentYear)
+        {
+            var childGender = ProbabilityCalculator.IsEventHappened(Constants.FEMALE_BIRTH_PROBABILITY)? Gender.Female : Gender.Male;
+            ChildBirth?.Invoke(this, new ChildBirthEventArgs(childGender, currentYear));
         }
     }
 }
