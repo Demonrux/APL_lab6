@@ -34,7 +34,9 @@ namespace Demographic.Classes
                 {
                     var gender = ProbabilityCalculator.IsEventHappened(Constants.DEFAULT_GENDER_PROBABILITY) ? Gender.Male : Gender.Female;
                     var person = new Person(age, gender, DeathRules, this);
+                    
                     person.ChildBirth += OnChildBirth;
+                    this.YearTick += person.OnYearTick;
                     _persons.Add(person);
                 }
             }
