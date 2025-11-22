@@ -5,7 +5,7 @@ namespace Demographic.Classes
 {
     public class Engine : IEngine
     {
-        public event Action<int> YearTick;
+        public event Action<int, DeathRules> YearTick;
 
         public DeathRules DeathRules { get; private set; }
         private List<Person> _persons;
@@ -33,19 +33,25 @@ namespace Demographic.Classes
 
                 for (int i = 0; i < countForThisAge; i++)
                 {
-                    var gender = ProbabilityCalculator.IsEventHappened(Constants.DEFAULT_GENDER_PROBABILITY) ? Gender.Male : Gender.Female;
+                    var gender = ProbabilityCalculator.IsEventHappened(Constants.DEFAULT_GENDER_PROBABILITY)
+                        ? Gender.Male
+                        : Gender.Female;
                     var person = new Person(age, gender);
-
                     person.ChildBirth += OnChildBirth;
+
+                    YearTick += person.ProcessYear;
+
                     _persons.Add(person);
                 }
             }
         }
 
-        private void OnChildBirth(Person parent, ChildBirthEventArgs e)
+        private void OnChildBirth(Gender childGender)
         {
-            var child = new Person(0, e.ChildGender);
+            var child = new Person(0, childGender);
             child.ChildBirth += OnChildBirth;
+
+            YearTick += child.ProcessYear;
 
             _persons.Add(child);
         }
@@ -54,12 +60,8 @@ namespace Demographic.Classes
         {
             while (_currentYear <= endYear)
             {
-                foreach (var person in _persons.ToList())
-                {
-                    person.ProcessYear(_currentYear, DeathRules);
-                }
+                YearTick?.Invoke(_currentYear, DeathRules);
 
-                YearTick?.Invoke(_currentYear);
                 SaveYearlyStats();
                 _currentYear++;
             }
@@ -67,14 +69,13 @@ namespace Demographic.Classes
 
         private void SaveYearlyStats()
         {
-            var alivePersons = _persons.Where(p => p.IsAlive).ToList();
 
             var stats = new DemographicStats
             {
                 Year = _currentYear,
-                TotalPopulation = alivePersons.Count * (int)Constants.INITIAL_POPULATION_SCALE,
-                MalePopulation = alivePersons.Count(p => p.Gender == Gender.Male) * (int)Constants.INITIAL_POPULATION_SCALE,
-                FemalePopulation = alivePersons.Count(p => p.Gender == Gender.Female) * (int)Constants.INITIAL_POPULATION_SCALE
+                TotalPopulation = _persons.Count * (int)Constants.INITIAL_POPULATION_SCALE,
+                MalePopulation = _persons.Count(p => p.Gender == Gender.Male) * (int)Constants.INITIAL_POPULATION_SCALE,
+                FemalePopulation = _persons.Count(p => p.Gender == Gender.Female) * (int)Constants.INITIAL_POPULATION_SCALE
             };
 
             _simulationResult.YearlyStatistics.Add(stats);
