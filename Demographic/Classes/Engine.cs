@@ -46,7 +46,7 @@ namespace Demographic.Classes
             {
                 var newChildren = new List<Person>();
 
-                foreach (var person in _persons.ToList())
+                foreach (var person in _persons)
                 {
                     bool childBorn = person.ProcessYear(_currentYear, DeathRules);
 
@@ -70,7 +70,7 @@ namespace Demographic.Classes
 
         private void SaveYearlyStats()
         {
-            var alivePersons = _persons.Where(p => p.IsAlive).ToList();
+            var alivePersons = _persons.Where(persons => persons.IsAlive).ToList();
 
             var stats = new DemographicStats
             {
