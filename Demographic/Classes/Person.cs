@@ -14,12 +14,15 @@ namespace Demographic.Classes
         private readonly DeathRules _deathRules;
         private readonly IEngine _engine;
 
-        public Person(int age, Gender gender)
+        public Person(int age, Gender gender, DeathRules deathRules, IEngine engine)
         {
             Age = age;
             Gender = gender;
+            _deathRules = deathRules;
+            _engine = engine;
+            _engine.YearTick += ProcessYear;
         }
-
+        
         public void ProcessYear(int currentYear)
         {
             if (!IsAlive) return;
