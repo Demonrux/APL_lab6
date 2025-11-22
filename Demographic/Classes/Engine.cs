@@ -65,7 +65,7 @@ namespace Demographic.Classes
                 var deadPersons = _persons.Where(persons => !persons.IsAlive).ToList();
                 foreach (var deadPerson in deadPersons)
                 {
-                    YearTick -= deadPerson.ProcessYear; // ОТПИСКА!
+                    YearTick -= deadPerson.ProcessYear; 
                 }
 
                 SaveYearlyStats();
