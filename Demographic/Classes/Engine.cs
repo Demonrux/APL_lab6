@@ -66,6 +66,7 @@ namespace Demographic.Classes
                 foreach (var deadPerson in deadPersons)
                 {
                     YearTick -= deadPerson.ProcessYear; 
+                    deadPerson.ChildBirth -= OnChildBirth;
                 }
 
                 SaveYearlyStats();
