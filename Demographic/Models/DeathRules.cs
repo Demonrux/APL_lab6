@@ -17,7 +17,7 @@
                 return gender == Gender.Male ? rule.DeathProbabilityMale : rule.DeathProbabilityFemale;
             }
 
-            return 1.0;
+            return Constants.DEFAULT_DEATH_PROBABILITY;
         }
     }
 

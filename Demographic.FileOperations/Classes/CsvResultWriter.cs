@@ -11,7 +11,9 @@ namespace Demographic.FileOperations.Classes
         {
             try
             {
-                Console.WriteLine($"Запись {yearlyStats.Count} записей статистики...");
+                Console.WriteLine($"Путь: {filePath}");
+                Console.WriteLine($"Статистика: {yearlyStats?.Count ?? 0} записей");
+                
                 var lines = new List<string>
                 {
                     "year,total_population,male_population,female_population"

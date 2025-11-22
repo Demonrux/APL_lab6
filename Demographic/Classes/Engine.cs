@@ -3,9 +3,10 @@ using Demographic.Interfaces;
 
 namespace Demographic.Classes
 {
+    /// @ingroup core_system
     public class Engine : IEngine
     {
-        public event EventHandler<int> YearTick;
+        public event Action<int> YearTick;
         public DeathRules DeathRules { get; private set; }
         private List<Person> _persons;
         private int _currentYear;
@@ -13,7 +14,7 @@ namespace Demographic.Classes
 
         public void Initialize(double totalPopulation, int startYear, InitialAgeData ageData, DeathRules deathRules)
         {
-            double totalPopulationInObjects = totalPopulation / 1000.0;
+            double totalPopulationInObjects = totalPopulation / Constants.INITIAL_POPULATION_SCALE;
             DeathRules = deathRules;
             _persons = new List<Person>();
             _currentYear = startYear;
@@ -24,8 +25,6 @@ namespace Demographic.Classes
 
         private void InitializeInitialPopulation(double totalPopulation, InitialAgeData ageData)
         {
-            var random = new Random();
-
             foreach (var (age, percentage) in ageData.AgePercentages)
             {
                 int countForThisAge = (int)(totalPopulation * percentage);
@@ -34,17 +33,17 @@ namespace Demographic.Classes
 
                 for (int i = 0; i < countForThisAge; i++)
                 {
-                    var gender = random.Next(2) == 0 ? Gender.Male : Gender.Female;
-                    var person = new Person(age, gender, this);
+                    var gender = ProbabilityCalculator.IsEventHappened(Constants.DEFAULT_GENDER_PROBABILITY) ? Gender.Male : Gender.Female;
+                    var person = new Person(age, gender, DeathRules, this);
                     person.ChildBirth += OnChildBirth;
                     _persons.Add(person);
                 }
             }
         }
 
-        private void OnChildBirth(object sender, ChildBirthEventArgs e)
+        private void OnChildBirth(ChildBirthEventArgs e)
         {
-            var child = new Person(0, e.ChildGender, this);
+            var child = new Person(0, e.ChildGender, DeathRules, this);
             child.ChildBirth += OnChildBirth;
             _persons.Add(child);
         }
@@ -53,7 +52,7 @@ namespace Demographic.Classes
         {
             while (_currentYear <= endYear)
             {
-                YearTick?.Invoke(this, _currentYear);
+                YearTick?.Invoke(_currentYear);
 
                 SaveYearlyStats();
                 _currentYear++;
@@ -67,9 +66,9 @@ namespace Demographic.Classes
             var stats = new DemographicStats
             {
                 Year = _currentYear,
-                TotalPopulation = alivePersons.Count,
-                MalePopulation = alivePersons.Count(p => p.Gender == Gender.Male),
-                FemalePopulation = alivePersons.Count(p => p.Gender == Gender.Female)
+                TotalPopulation = alivePersons.Count * (int)Constants.INITIAL_POPULATION_SCALE,
+                MalePopulation = alivePersons.Count(persons => persons.Gender == Gender.Male) * (int)Constants.INITIAL_POPULATION_SCALE,
+                FemalePopulation = alivePersons.Count(persons => persons.Gender == Gender.Female) * (int)Constants.INITIAL_POPULATION_SCALE
             };
 
             _simulationResult.YearlyStatistics.Add(stats);

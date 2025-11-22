@@ -3,6 +3,7 @@ using Demographic.Models;
 
 namespace Demographic.Classes
 {
+    /// @ingroup core_system
     public class Person
     {
         public int Age { get; private set; }
@@ -10,35 +11,42 @@ namespace Demographic.Classes
         public bool IsAlive { get; private set; } = true;
         public int? DeathYear { get; private set; }
 
-        public event EventHandler<ChildBirthEventArgs> ChildBirth;
+        private readonly DeathRules _deathRules;
+        private readonly IEngine _engine;
 
-        public Person(int age, Gender gender, IEngine engine)
+        public event Action<ChildBirthEventArgs> ChildBirth;
+
+        public Person(int age, Gender gender, DeathRules deathRules, IEngine engine)
         {
             Age = age;
             Gender = gender;
-            engine.YearTick += OnYearTick;
+            _deathRules = deathRules;
+            _engine = engine;
+
+            _engine.YearTick += ProcessYear;
         }
 
-        private void OnYearTick(object sender, int currentYear)
+        public void ProcessYear(int currentYear)
         {
             if (!IsAlive) return;
 
-            var engine = (IEngine)sender;
-            double deathProbability = engine.DeathRules.GetDeathProbability(Age, Gender);
+            double deathProbability = _deathRules.GetDeathProbability(Age, Gender);
 
             if (ProbabilityCalculator.IsEventHappened(deathProbability))
             {
                 IsAlive = false;
                 DeathYear = currentYear;
+                _engine.YearTick -= ProcessYear;
                 return;
             }
 
             Age++;
 
-            if (IsAlive && Gender == Gender.Female && Age >= 18 && Age <= 45)
+            if (IsAlive && Gender == Gender.Female &&
+                Age >= Constants.MIN_CHILDBEARING_AGE &&
+                Age <= Constants.MAX_CHILDBEARING_AGE)
             {
-                double birthProbability = 0.05;
-                if (ProbabilityCalculator.IsEventHappened(birthProbability))
+                if (ProbabilityCalculator.IsEventHappened(Constants.BIRTH_PROBABILITY))
                 {
                     OnChildBirth(currentYear);
                 }
@@ -47,8 +55,10 @@ namespace Demographic.Classes
 
         protected virtual void OnChildBirth(int currentYear)
         {
-            var childGender = ProbabilityCalculator.IsEventHappened(0.55) ? Gender.Female : Gender.Male;
-            ChildBirth?.Invoke(this, new ChildBirthEventArgs(childGender, currentYear));
+            var childGender = ProbabilityCalculator.IsEventHappened(Constants.FEMALE_BIRTH_PROBABILITY)
+                ? Gender.Female
+                : Gender.Male;
+            ChildBirth?.Invoke(new ChildBirthEventArgs(childGender, currentYear));
         }
     }
 }
