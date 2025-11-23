@@ -38,7 +38,6 @@ Demographic/ # Решение
 │   ├── Interfaces/
 │   │   └── IEngine.cs # Интерфейс движка
 │   └── Models/
-│       ├── ChildBirthEventArgs.cs # Аргументы события рождения
 |       ├── Constants.cs # Дата-класс для хранения констант 
 │       ├── DeathRules.cs # Правила смертности
 │       ├── DemographicStats.cs # Статистика за год
