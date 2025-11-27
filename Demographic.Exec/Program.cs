@@ -58,7 +58,7 @@ namespace Demographic.Exec
                 Console.WriteLine($"После инициализации: {initialPopulation.Count} объектов Person");
 
                 Console.WriteLine("Запуск...");
-                engine.YearTick += (year) => Console.WriteLine($"Обработан год: {year}");
+                engine.YearTick += (year, deathRules) => Console.WriteLine($"Обработан год: {year}");
 
                 engine.RunSimulation(endYear);
 
