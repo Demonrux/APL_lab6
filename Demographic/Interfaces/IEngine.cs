@@ -6,7 +6,7 @@ namespace Demographic.Interfaces
 {
     public interface IEngine
     {
-        event Action<int> YearTick;
+        event Action<int, DeathRules> YearTick;
         DeathRules DeathRules { get; }
         void Initialize(double totalPopulation, int startYear, InitialAgeData ageData, DeathRules deathRules);
         void RunSimulation(int endYear);
